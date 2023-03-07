@@ -4,6 +4,7 @@ class View {
 		this.el = el; 
 
 		this.setupBoard(); 
+		this.bindEvents();
 	}
 
   setupBoard() {
@@ -20,22 +21,23 @@ class View {
   bindEvents() {
 		this.el.addEventListener("click", e => {
 			this.handleClick(e);
+			console.log("bindEvents")
 		} )
 	}
 
   handleClick(e) {
-			let row = e.target.dataset.row;
-			let col = e.target.dataset.col; 
-			let spot = [row, col];
+		console.log("Click") 
+			let spot = e.target;
 			this.makeMove(spot);
 	}
 
   makeMove(square) {
-		if (!this.game.board.isEmptyPos(square)) {
+		let pos = JSON.parse(square.dataset.pos);
+		if (!this.game.board.isEmptyPos(pos)) {
 			alert("That square is not empty!")
 		} else {
-			this.game.playMove(square)
-
+			this.game.playMove(pos)
+			square.innerText = this.game.currentPlayer
 		}
 
 		this.game.isOver() && this.handleGameOver()
